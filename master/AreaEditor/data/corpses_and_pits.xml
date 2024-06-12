@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <!--the donation pit in room 19091 - Temple of The Moon-->
+  <Item
+    RoomVnum="19091">
+    <VNum>19000</VNum>
+    <Durability>100</Durability>
+    <ExtraFlags>NoPurge</ExtraFlags>
+    <Affects />
+    <ItemTypes>Container</ItemTypes>
+    <Contains />
+  </Item>
+  <!--the donation pit in room 19090 - Temple of The Shadow-->
+  <Item
+    RoomVnum="19090">
+    <VNum>19000</VNum>
+    <Durability>100</Durability>
+    <ExtraFlags>NoPurge</ExtraFlags>
+    <Affects />
+    <ItemTypes>Container</ItemTypes>
+    <Contains />
+  </Item>
+  <!--the donation pit in room 19089 - Temple of the Sun-->
+  <Item
+    RoomVnum="19089">
+    <VNum>19000</VNum>
+    <Durability>100</Durability>
+    <ExtraFlags>NoPurge</ExtraFlags>
+    <Affects />
+    <ItemTypes>Container</ItemTypes>
+    <Contains />
+  </Item>
+  <!--the donation pit in room 3054 - By the Temple Altar-->
+  <Item
+    RoomVnum="3054">
+    <VNum>3010</VNum>
+    <Durability>100</Durability>
+    <ExtraFlags>Bless NoPurge</ExtraFlags>
+    <Affects />
+    <ItemTypes>Container</ItemTypes>
+    <Contains />
+  </Item>
+</Items>

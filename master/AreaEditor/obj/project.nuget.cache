@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "dgSpecHash": "tUckMV43dTDrSjg00TH1LTxamRhunytXiGP05V74SNyt59+7FqjbhRE48+Y4BTgt0hAYaqQR7PyY553ouSzY5Q==",
+  "success": true,
+  "projectFilePath": "/home/dagl/Desktop/repos/CrimsonStainedLandsAreaEditor/master/AreaEditor/AreaEditor.csproj",
+  "expectedPackageFiles": [
+    "/home/dagl/.nuget/packages/atksharp/3.24.24.95/atksharp.3.24.24.95.nupkg.sha512",
+    "/home/dagl/.nuget/packages/cairosharp/3.24.24.95/cairosharp.3.24.24.95.nupkg.sha512",
+    "/home/dagl/.nuget/packages/gdksharp/3.24.24.95/gdksharp.3.24.24.95.nupkg.sha512",
+    "/home/dagl/.nuget/packages/giosharp/3.24.24.95/giosharp.3.24.24.95.nupkg.sha512",
+    "/home/dagl/.nuget/packages/glibsharp/3.24.24.95/glibsharp.3.24.24.95.nupkg.sha512",
+    "/home/dagl/.nuget/packages/gtksharp/3.24.24.95/gtksharp.3.24.24.95.nupkg.sha512",
+    "/home/dagl/.nuget/packages/gtksharp.dependencies/1.1.1/gtksharp.dependencies.1.1.1.nupkg.sha512",
+    "/home/dagl/.nuget/packages/pangosharp/3.24.24.95/pangosharp.3.24.24.95.nupkg.sha512",
+    "/home/dagl/.nuget/packages/skiasharp/2.88.8/skiasharp.2.88.8.nupkg.sha512",
+    "/home/dagl/.nuget/packages/skiasharp.nativeassets.linux/2.88.8/skiasharp.nativeassets.linux.2.88.8.nupkg.sha512",
+    "/home/dagl/.nuget/packages/skiasharp.nativeassets.macos/2.88.8/skiasharp.nativeassets.macos.2.88.8.nupkg.sha512",
+    "/home/dagl/.nuget/packages/skiasharp.nativeassets.win32/2.88.8/skiasharp.nativeassets.win32.2.88.8.nupkg.sha512"
+  ],
+  "logs": []
+}

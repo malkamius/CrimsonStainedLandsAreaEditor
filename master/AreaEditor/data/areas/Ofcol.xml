@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Area>
+  <AreaData>
+    <Name>Ofcol</Name>
+    <Info></Info>
+    <VnumStart>5500</VnumStart>
+    <VnumEnd>5599</VnumEnd>
+    <Builders></Builders>
+    <Security>0</Security>
+    <Credits>{ All } Alfa    Ofcol</Credits>
+    <OverRoomVnum>0</OverRoomVnum>
+  </AreaData>
+  <Rooms>
+    <Room>
+      <VNum>5550</VNum>
+      <Name>Village street</Name>
+      <Description>You stand at the small village street in Ofcol. From here you see small
+houses and only few people. North of here the village street continues up to
+the small square where some people are gathered as always.</Description>
+      <Sector>City</Sector>
+      <Flags></Flags>
+      <Exits>
+        <Exit>
+          <Direction>North</Direction>
+          <Destination>5551</Destination>
+          <Display>the door north</Display>
+          <Keywords></Keywords>
+          <Description>You look up the village street noticing nothing special at all.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+        <Exit>
+          <Direction>South</Direction>
+          <Destination>40796</Destination>
+          <Display>the door south</Display>
+          <Keywords></Keywords>
+          <Description></Description>
+          <Flags></Flags>
+          <Keys></Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+      </Exits>
+      <ExtraDescriptions />
+    </Room>
+    <Room>
+      <VNum>5551</VNum>
+      <Name>Village street</Name>
+      <Description>You are standing on the village street of Ofcol. East from here is a
+small alley and north you enter the village square. Towards the south you
+can leave Ofcol.</Description>
+      <Sector>City</Sector>
+      <Flags></Flags>
+      <Exits>
+        <Exit>
+          <Direction>North</Direction>
+          <Destination>5552</Destination>
+          <Display>the door north</Display>
+          <Keywords></Keywords>
+          <Description>The village square is as usual not overcrowded.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+        <Exit>
+          <Direction>East</Direction>
+          <Destination>5553</Destination>
+          <Display>the door east</Display>
+          <Keywords></Keywords>
+          <Description>The small alley looks relative peaceful.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+        <Exit>
+          <Direction>South</Direction>
+          <Destination>5550</Destination>
+          <Display>the door south</Display>
+          <Keywords></Keywords>
+          <Description>You see the village street eventually becoming the wide road.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+        <Exit>
+          <Direction>West</Direction>
+          <Destination>23600</Destination>
+          <Display>the door west</Display>
+          <Keywords></Keywords>
+          <Description></Description>
+          <Flags></Flags>
+          <Keys>0</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+      </Exits>
+      <ExtraDescriptions />
+    </Room>
+    <Room>
+      <VNum>5552</VNum>
+      <Name>Village square</Name>
+      <Description>The village square is a place where inhabitants of Ofcol gather to talk,
+trade and sell items and just have a good time. You see a small shop to the
+west and the local inn to the north. If you leave south you go to village
+street.</Description>
+      <Sector>City</Sector>
+      <Flags></Flags>
+      <Exits>
+        <Exit>
+          <Direction>North</Direction>
+          <Destination>5556</Destination>
+          <Display>the door north</Display>
+          <Keywords></Keywords>
+          <Description>You see a local inn called 'The Ofcol Local Inn'. Looks nice.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+        <Exit>
+          <Direction>South</Direction>
+          <Destination>5551</Destination>
+          <Display>the door south</Display>
+          <Keywords></Keywords>
+          <Description>You see the village street of Ofcol.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+        <Exit>
+          <Direction>West</Direction>
+          <Destination>5555</Destination>
+          <Display>the door west</Display>
+          <Keywords></Keywords>
+          <Description>A small shop with the sign 'Luxan's Mixed goods' hanging in front of it.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+      </Exits>
+      <ExtraDescriptions />
+    </Room>
+    <Room>
+      <VNum>5553</VNum>
+      <Name>The small alley</Name>
+      <Description>You are in a small, quiet alley. From here you see the village street to
+the west and a small room lies to the south.</Description>
+      <Sector>City</Sector>
+      <Flags></Flags>
+      <Exits>
+        <Exit>
+          <Direction>East</Direction>
+          <Destination>601</Destination>
+          <Display>the door east</Display>
+          <Keywords></Keywords>
+          <Description>You see a big intersection.</Description>
+          <Flags></Flags>
+          <Keys>0</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+        <Exit>
+          <Direction>South</Direction>
+          <Destination>5554</Destination>
+          <Display>the door south</Display>
+          <Keywords></Keywords>
+          <Description>It looks like the future site of a training room.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+        <Exit>
+          <Direction>West</Direction>
+          <Destination>5551</Destination>
+          <Display>the door west</Display>
+          <Keywords></Keywords>
+          <Description>You notice nothing but the village street.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+      </Exits>
+      <ExtraDescriptions />
+    </Room>
+    <Room>
+      <VNum>5554</VNum>
+      <Name>The future training room</Name>
+      <Description>This is the future site of a training room. The only exit is north
+leading to the small alley.</Description>
+      <Sector>City</Sector>
+      <Flags></Flags>
+      <Exits>
+        <Exit>
+          <Direction>North</Direction>
+          <Destination>5553</Destination>
+          <Display>the door north</Display>
+          <Keywords></Keywords>
+          <Description>You are able to see the small alley, really not very interesting.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+      </Exits>
+      <ExtraDescriptions />
+    </Room>
+    <Room>
+      <VNum>5555</VNum>
+      <Name>Luxan's mixed shop</Name>
+      <Description>You are standing in a small shop, filled with all kinds of goods. Here
+you might be able to find just the thing you're looking for. The only exit
+is east to village square.</Description>
+      <Sector>City</Sector>
+      <Flags></Flags>
+      <Exits>
+        <Exit>
+          <Direction>East</Direction>
+          <Destination>5552</Destination>
+          <Display>the door east</Display>
+          <Keywords></Keywords>
+          <Description>The village square is as usual not overcrowded.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+      </Exits>
+      <ExtraDescriptions />
+    </Room>
+    <Room>
+      <VNum>5556</VNum>
+      <Name>The Local Inn</Name>
+      <Description>You are in the local inn, where the peaceful citizens of Ofcol gather to
+have a drink or 5 if they have dry throats. You can't help thinking that
+Ofcol is a dry city, when you see the many people here. The only exit is
+south to the village square.</Description>
+      <Sector>City</Sector>
+      <Flags></Flags>
+      <Exits>
+        <Exit>
+          <Direction>South</Direction>
+          <Destination>5552</Destination>
+          <Display>the door south</Display>
+          <Keywords></Keywords>
+          <Description>The village square is as usual not overcrowded.</Description>
+          <Flags></Flags>
+          <Keys>-1</Keys>
+          <ExitSize>Giant</ExitSize>
+        </Exit>
+      </Exits>
+      <ExtraDescriptions />
+    </Room>
+    <Room>
+      <VNum>5577</VNum>
+      <Name>Ravan's hideout</Name>
+      <Description>This place is a small, cosy place where no one disturbs you all the time.
+The room has little decoration except for some pictures on the wall. You
+notice that there are no exits from this room.</Description>
+      <Sector>Inside</Sector>
+      <Flags>NoMob</Flags>
+      <Exits />
+      <ExtraDescriptions>
+        <ExtraDescription>
+          <Keyword>pictures picture decoration</Keyword>
+          <Description>These pictures show the friend's and foe's of Ravan. They are easy to
+separate, as most of the foe's have the letters R. I. P. Inscripted
+underneath them.</Description>
+        </ExtraDescription>
+        <ExtraDescription>
+          <Keyword>foe foes enemies</Keyword>
+          <Description>There is only one picture yet... Dim. It pictures him hanging from a
+gallow, north of the town. It has the letters R. I. P. Inscripted
+underneath.</Description>
+        </ExtraDescription>
+        <ExtraDescription>
+          <Keyword>friend friends</Keyword>
+          <Description>The list include such prominent names as : God, Lottie, Kurgan, Ezzard,
+Mike, Sprocket and Stormbringer.</Description>
+        </ExtraDescription>
+      </ExtraDescriptions>
+    </Room>
+  </Rooms>
+  <NPCs />
+  <Items />
+  <Resets>
+    <Reset Type="NPC" Destination="5550" Count="3" Max="5" Vnum="303">
+      <!--Spawn the citizen to Village street-->
+    </Reset>
+    <Reset Type="NPC" Destination="5552" Count="3" Max="5" Vnum="304">
+      <!--Spawn the citizen to Village square-->
+    </Reset>
+    <Reset Type="Equip" Destination="0" Count="0" Max="0" Vnum="3020">
+      <!--Spawn a dagger to the citizen-->
+    </Reset>
+    <Reset Type="NPC" Destination="5553" Count="3" Max="5" Vnum="304">
+      <!--Spawn the citizen to The small alley-->
+    </Reset>
+    <Reset Type="NPC" Destination="5555" Count="1" Max="1" Vnum="306">
+      <!--Spawn Luxan to Luxan's mixed shop-->
+    </Reset>
+    <Reset Type="Give" Destination="0" Count="0" Max="0" Vnum="304">
+      <!--Spawn wild flowers to Luxan-->
+    </Reset>
+    <Reset Type="Give" Destination="0" Count="0" Max="0" Vnum="3030">
+      <!--Spawn a torch to Luxan-->
+    </Reset>
+    <Reset Type="NPC" Destination="5556" Count="3" Max="5" Vnum="303">
+      <!--Spawn the citizen to The Local Inn-->
+    </Reset>
+    <Reset Type="NPC" Destination="5556" Count="1" Max="1" Vnum="308">
+      <!--Spawn the Innkeeper to The Local Inn-->
+    </Reset>
+    <Reset Type="Give" Destination="0" Count="0" Max="0" Vnum="3000">
+      <!--Spawn a barrel of beer to the Innkeeper-->
+    </Reset>
+    <Reset Type="Give" Destination="0" Count="0" Max="0" Vnum="3001">
+      <!--Spawn a bottle of beer to the Innkeeper-->
+    </Reset>
+    <Reset Type="NPC" Destination="5577" Count="1" Max="1" Vnum="350">
+      <!--Spawn the pet dragon to Ravan's hideout-->
+    </Reset>
+  </Resets>
+</Area>

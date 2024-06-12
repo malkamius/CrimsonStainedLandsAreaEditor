@@ -2,6 +2,7 @@
 using Gdk;
 using Gtk;
 using MUDMapBuilder;
+using SkiaSharp;
 
 Hello.Main();
     
@@ -9,7 +10,7 @@ class MyWindow : Gtk.Window {
     
     class MyNode {
         public object Value {get;set;}
-        public TreePath Path {get;set;}
+        public TreePath? Path {get;set;}
 
         public MyNode(object value)
         {
@@ -101,7 +102,8 @@ class MyWindow : Gtk.Window {
         MapSpinner.HeightRequest = 100;
         MapSpinner.Halign = Align.Center;
         MapSpinner.Valign = Align.Center;
-        
+        MapSpinner.Visible = false;
+
         MainGrid = new Grid();
         OverlayControl = new Overlay();
         OverlayControl.Add(MapScrollWindow);
@@ -118,17 +120,41 @@ class MyWindow : Gtk.Window {
     private void MapImageEventBox_Click(object sender, ButtonReleaseEventArgs args)
     {
         if(AreaMap != null) {
-            var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)args.Event.X, (int)args.Event.Y)));
+            MapImageEventBox.GetAllocatedSize(out var alloc, out var baseline);
             
+            MapImage.GetAllocatedSize(out var alloc2, out var baseline2);
+            
+            //var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)(args.Event.X * (float) MapImage.Pixbuf.Width / alloc.Width) , (int)(args.Event.Y * (float) MapImage.Pixbuf.Height / alloc.Height))));
+            var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)(args.Event.X) , (int)(args.Event.Y))));
             if(r != null && RoomNodes.TryGetValue(r.Room.Id, out var room))
             {
                 NavigatorTreeView.ExpandToPath(room.Path);
                 NavigatorTreeView.Selection.SelectPath(room.Path);
+                var mmboptions = new MUDMapBuilder.BuildOptions();
+                mmboptions.MaxSteps = 1000;
+                mmboptions.RemoveRoomsWithSingleOutsideExit = false;
+                mmboptions.RemoveSolitaryRooms = false;
+                if(MarkedRoom != null)
+                    MarkedRoom.MarkColor = OriginalColor;
+                OriginalColor = r.Room.MarkColor;
+                MarkedRoom = r.Room;
+                r.Room.MarkColor = SKColors.Red;
+                if(BuiltArea != null)
+                {
+                    if(MapImage.Pixbuf != null) {
+                        MapImage.Pixbuf.Dispose();
+                    }
+
+                    AreaMap = BuiltArea.BuildPng(mmboptions, true);
+                    MapImage.Pixbuf = new Pixbuf(AreaMap.PngData);
+                }
             }
         }
     }
-
+    private MMBRoom MarkedRoom;
+    private SKColor? OriginalColor;
     private MMBImageResult? AreaMap;
+    private MMBArea? BuiltArea;
 
     private void BuildMap(AreaData area) {
         var mmboptions = new MUDMapBuilder.BuildOptions();
@@ -182,9 +208,10 @@ class MyWindow : Gtk.Window {
         var log = new Action<string>((str) => {});
         var result = MapBuilder.MultiRun(mmbproj, log);
         
-        
-        AreaMap = result.History.Last().BuildPng(mmboptions, true);
+        BuiltArea = result.History.Last();
+        AreaMap = BuiltArea.BuildPng(mmboptions, true);
         MapImage.Pixbuf = new Pixbuf(AreaMap.PngData);
+        
     }
 
     private async void NavigatorTreeView_RowActivated(object o, RowActivatedArgs args)
@@ -201,9 +228,11 @@ class MyWindow : Gtk.Window {
                         MapImage.Pixbuf.Dispose();
                     MapImage.Pixbuf = null;
                     NavigatorTreeView.Sensitive = false;
+                    MapSpinner.Visible = true;
                     MapSpinner.Start();
                     await Task.Run(() => BuildMap(area));
                     MapSpinner.Stop();
+                    MapSpinner.Visible = false;
                     NavigatorTreeView.Sensitive = true;
                 }
             }

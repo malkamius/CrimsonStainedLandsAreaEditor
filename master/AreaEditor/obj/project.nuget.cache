@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "tUckMV43dTDrSjg00TH1LTxamRhunytXiGP05V74SNyt59+7FqjbhRE48+Y4BTgt0hAYaqQR7PyY553ouSzY5Q==",
+  "dgSpecHash": "pKFZzueORTu1+oInl7RJ3GgUdBeESgbd+y8qrw5WybQXcoQMLaROMzg7IXfPSyjUhLeFB8GQTaGraiXLuFJlgg==",
   "success": true,
   "projectFilePath": "/home/dagl/Desktop/repos/CrimsonStainedLandsAreaEditor/master/AreaEditor/AreaEditor.csproj",
   "expectedPackageFiles": [
@@ -11,6 +11,8 @@
     "/home/dagl/.nuget/packages/glibsharp/3.24.24.95/glibsharp.3.24.24.95.nupkg.sha512",
     "/home/dagl/.nuget/packages/gtksharp/3.24.24.95/gtksharp.3.24.24.95.nupkg.sha512",
     "/home/dagl/.nuget/packages/gtksharp.dependencies/1.1.1/gtksharp.dependencies.1.1.1.nupkg.sha512",
+    "/home/dagl/.nuget/packages/keralua/1.4.1/keralua.1.4.1.nupkg.sha512",
+    "/home/dagl/.nuget/packages/nlua/1.7.3/nlua.1.7.3.nupkg.sha512",
     "/home/dagl/.nuget/packages/pangosharp/3.24.24.95/pangosharp.3.24.24.95.nupkg.sha512",
     "/home/dagl/.nuget/packages/skiasharp/2.88.8/skiasharp.2.88.8.nupkg.sha512",
     "/home/dagl/.nuget/packages/skiasharp.nativeassets.linux/2.88.8/skiasharp.nativeassets.linux.2.88.8.nupkg.sha512",

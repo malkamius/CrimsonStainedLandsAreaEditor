@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AreaEditor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c31777693b829e35b28162ff47e80e61363f4ecc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76b47e595425944f2011b0f33acd75398dd1bcc5")]
 [assembly: System.Reflection.AssemblyProductAttribute("AreaEditor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AreaEditor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

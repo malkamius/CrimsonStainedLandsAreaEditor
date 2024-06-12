@@ -46,6 +46,14 @@
               "target": "Package",
               "version": "[1.1.1, )"
             },
+            "KeraLua": {
+              "target": "Package",
+              "version": "[1.4.1, )"
+            },
+            "NLua": {
+              "target": "Package",
+              "version": "[1.7.3, )"
+            },
             "SkiaSharp": {
               "target": "Package",
               "version": "[2.88.8, )"

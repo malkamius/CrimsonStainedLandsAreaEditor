@@ -120,12 +120,17 @@ class MyWindow : Gtk.Window {
     private void MapImageEventBox_Click(object sender, ButtonReleaseEventArgs args)
     {
         if(AreaMap != null) {
+            float xoffset = 0;
+            float yoffset = 0;
             MapImageEventBox.GetAllocatedSize(out var alloc, out var baseline);
             
             MapImage.GetAllocatedSize(out var alloc2, out var baseline2);
-            
+            if(alloc2.Width > MapImage.Pixbuf.Width)
+                xoffset = (alloc2.Width - MapImage.Pixbuf.Width) / 2;
+            if(alloc2.Height > MapImage.Pixbuf.Height)
+                yoffset = (alloc2.Height - MapImage.Pixbuf.Height) / 2;
             //var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)(args.Event.X * (float) MapImage.Pixbuf.Width / alloc.Width) , (int)(args.Event.Y * (float) MapImage.Pixbuf.Height / alloc.Height))));
-            var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)(args.Event.X) , (int)(args.Event.Y))));
+            var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)(args.Event.X - xoffset) , (int)(args.Event.Y - yoffset))));
             if(r != null && RoomNodes.TryGetValue(r.Room.Id, out var room))
             {
                 NavigatorTreeView.ExpandToPath(room.Path);

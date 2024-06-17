@@ -1,25 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "/home/dagl/Desktop/repos/CrimsonStainedLandsAreaEditor/master/AreaEditor/AreaEditor.csproj": {}
+    "i:\\repos\\CrimsonStainedLandsAreaEditor\\master\\AreaEditor\\AreaEditor.csproj": {}
   },
   "projects": {
-    "/home/dagl/Desktop/repos/CrimsonStainedLandsAreaEditor/master/AreaEditor/AreaEditor.csproj": {
+    "i:\\repos\\CrimsonStainedLandsAreaEditor\\master\\AreaEditor\\AreaEditor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dagl/Desktop/repos/CrimsonStainedLandsAreaEditor/master/AreaEditor/AreaEditor.csproj",
+        "projectUniqueName": "i:\\repos\\CrimsonStainedLandsAreaEditor\\master\\AreaEditor\\AreaEditor.csproj",
         "projectName": "AreaEditor",
-        "projectPath": "/home/dagl/Desktop/repos/CrimsonStainedLandsAreaEditor/master/AreaEditor/AreaEditor.csproj",
-        "packagesPath": "/home/dagl/.nuget/packages/",
-        "outputPath": "/home/dagl/Desktop/repos/CrimsonStainedLandsAreaEditor/master/AreaEditor/obj/",
+        "projectPath": "i:\\repos\\CrimsonStainedLandsAreaEditor\\master\\AreaEditor\\AreaEditor.csproj",
+        "packagesPath": "C:\\Users\\Giaken\\.nuget\\packages\\",
+        "outputPath": "i:\\repos\\CrimsonStainedLandsAreaEditor\\master\\AreaEditor\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Users\\Giaken\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder",
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/dagl/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Giaken\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Giaken\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,6 +40,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -79,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.105/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -74,23 +74,26 @@ partial class MainWindow : Gtk.Window {
 
     private async void NavigatorTreeView_SelectionChanged(object? sender, EventArgs e)
     {
-        NavigatorTreeView.Selection.GetSelected(out var iter);
-        var data = NavigatorTreeView.Model.GetValue(iter, 0);
-        var column = NavigatorTreeView.Columns.First();
-        if(data is MyNode myNode) {
-            NavigatorTreeView.ScrollToCell(myNode.Path, column, true, 0.5f, 0);
+        if(NavigatorTreeView.Selection.GetSelected(out var iter))
+        {
+            var data = NavigatorTreeView.Model.GetValue(iter, 0);
+            var column = NavigatorTreeView.Columns.First();
+            if(data is MyNode myNode) {
+                DoEvents();
+                var area = NavigatorTreeView.GetCellArea(myNode.Path, column);
+                NavigatorScrollWindow.GetAllocatedSize(out var navsize, out var navbaseline);
 
-            if(myNode.Value is RoomData roomData) {
-                if(BuiltArea == null || BuiltArea.Name != roomData.Area.Name) {
-                    await CallBuildMap(roomData.Area);
-                    DoEvents();
-                }
-                if(AreaMap != null && AreaMap.Rooms.AsEnumerable().FirstOrDefault(r => r.Room.Id == roomData.Vnum, out var selectedRoom)) {
-                    //if(MarkedRoom == null || MarkedRoom.Id != selectedRoom.Room.Id) {
+                //NavigatorTreeView.ScrollToCell(myNode.Path, null, false, 0.5f, 0);
+                NavigatorScrollWindow.Vadjustment.Value += area.Top - navsize.Height / 2;
+                NavigatorScrollWindow.Hadjustment.Value = 0;
+                if(myNode.Value is RoomData roomData) {
+                    if(BuiltArea == null || BuiltArea.Name != roomData.Area.Name) {
+                        await CallBuildMap(roomData.Area);
+                    }
+                    if(AreaMap != null && AreaMap.Rooms.AsEnumerable().FirstOrDefault(r => r.Room.Id == roomData.Vnum, out var selectedRoom)) {
                         RedrawMap(selectedRoom.Room);
-                        DoEvents();
                         MapScrollRoomIntoView(roomData);
-                    //}
+                    }
                 }
             }
         }
@@ -102,9 +105,13 @@ partial class MainWindow : Gtk.Window {
         MapImageEventBox.QueueComputeExpand();
         MapScrollWindow.QueueComputeExpand();
         MapImage.QueueDraw();
+        MapImageEventBox.QueueDraw();
         MapScrollWindow.QueueDraw();
-        
-        Gtk.Application.RunIteration(true);
+
+        NavigatorTreeView.QueueDraw();
+        NavigatorScrollWindow.QueueDraw();
+        while (Gtk.Application.EventsPending ()) 
+            Gtk.Application.RunIteration (true);
     }
 
     private void MapImageEventBox_Click(object sender, ButtonReleaseEventArgs args)

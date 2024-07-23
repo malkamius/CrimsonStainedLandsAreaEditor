@@ -1,5 +1,5 @@
 public static class Extensions {
-    public static bool FirstOrDefault<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate, out T result) {
+    public static bool FirstOrDefault<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate, out T? result) {
         try {
             result = enumerable.First<T>(predicate);
             return true;

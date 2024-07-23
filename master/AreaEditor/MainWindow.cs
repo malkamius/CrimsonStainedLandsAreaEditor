@@ -1,4 +1,7 @@
+using System.ComponentModel;
+using System.Diagnostics;
 using CrimsonStainedLands;
+using CrimsonStainedLands.Extensions;
 using Gdk;
 using Gtk;
 using MUDMapBuilder;
@@ -25,6 +28,7 @@ partial class MainWindow : Gtk.Window {
 
     public MainWindow() : base("Initializing") {
         this.InitializeComponents();
+        this.ShowNow();
         CrimsonStainedLands.Settings.Load();
         WeaponDamageMessage.LoadWeaponDamageMessages();
         Race.LoadRaces();
@@ -33,7 +37,7 @@ partial class MainWindow : Gtk.Window {
         WeaponDamageMessage.LoadWeaponDamageMessages();
         AreaData.LoadAreas();
         this.Title = $"{AreaData.Areas.Count} areas loaded, ({RoomData.Rooms.Count} rooms)";
-
+        RoomEditorPanel.UpdateRooms();
         Gtk.TreeStore AreasStore = new Gtk.TreeStore (typeof (MyNode));
         
         AreaData.Areas.OrderBy(a => a.Name).ToList().ForEach(area => {
@@ -68,9 +72,15 @@ partial class MainWindow : Gtk.Window {
         
         MapImage.Pixbuf = pixbuf;
         MapImage.SetSizeRequest(MapImage.Pixbuf.Width, MapImage.Pixbuf.Height);
+        
     }
 
-
+    private async void RoomEditorPanel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if(e.PropertyName == "EditingRoom.Name" && RoomEditorPanel.EditingRoom != null) {
+            await CallBuildMap(RoomEditorPanel.EditingRoom.Area, RoomEditorPanel.EditingRoom);
+        }
+    }
 
     private async void NavigatorTreeView_SelectionChanged(object? sender, EventArgs e)
     {
@@ -88,55 +98,47 @@ partial class MainWindow : Gtk.Window {
                 NavigatorScrollWindow.Hadjustment.Value = 0;
                 if(myNode.Value is RoomData roomData) {
                     if(BuiltArea == null || BuiltArea.Name != roomData.Area.Name) {
-                        await CallBuildMap(roomData.Area);
+                        await CallBuildMap(roomData.Area, roomData);
                     }
-                    if(AreaMap != null && AreaMap.Rooms.AsEnumerable().FirstOrDefault(r => r.Room.Id == roomData.Vnum, out var selectedRoom)) {
-                        RedrawMap(selectedRoom.Room);
-                        MapScrollRoomIntoView(roomData);
+                    else if(AreaMap != null && AreaMap.Rooms.AsEnumerable().FirstOrDefault(r => r.Room.Id == roomData.Vnum, out var selectedRoom)) {
+                        RedrawMap(selectedRoom?.Room);
+                        
                     }
+                    
+                    RoomEditorPanel.EditingRoom = roomData;
                 }
             }
         }
     }
+    private void ProcessPendingEvents()
+    {
+        while (Gtk.Application.EventsPending())
+            Gtk.Application.RunIteration(true);
+    }
 
     private void DoEvents()
     {
+        var rect = new Gdk.Rectangle(0, 0, MapImage.Pixbuf.Width, MapImage.Pixbuf.Height);
+        MapImage.SizeAllocate(rect);
+        MapImage.QueueResize();
+        MapImageEventBox.SizeAllocate(rect);
+        MapImageEventBox.QueueResize();
+        ProcessPendingEvents();
+        
+        
         MapImage.QueueComputeExpand();
-        MapImageEventBox.QueueComputeExpand();
-        MapScrollWindow.QueueComputeExpand();
         MapImage.QueueDraw();
+        MapImageEventBox.QueueComputeExpand();
         MapImageEventBox.QueueDraw();
-        MapScrollWindow.QueueDraw();
 
+
+        MapScrollWindow.CheckResize();
         NavigatorTreeView.QueueDraw();
         NavigatorScrollWindow.QueueDraw();
-        while (Gtk.Application.EventsPending ()) 
-            Gtk.Application.RunIteration (true);
+        ProcessPendingEvents();
     }
 
-    private void MapImageEventBox_Click(object sender, ButtonReleaseEventArgs args)
-    {
-        if(AreaMap != null) {
-            float xoffset = 0;
-            float yoffset = 0;
-            
-            MapImage.GetAllocatedSize(out var alloc, out var baseline2);
-            if(alloc.Width > MapImage.Pixbuf.Width)
-                xoffset = (alloc.Width - MapImage.Pixbuf.Width) / 2;
-            if(alloc.Height > MapImage.Pixbuf.Height)
-                yoffset = (alloc.Height - MapImage.Pixbuf.Height) / 2;
-            //var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)(args.Event.X * (float) MapImage.Pixbuf.Width / alloc.Width) , (int)(args.Event.Y * (float) MapImage.Pixbuf.Height / alloc.Height))));
-            var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)(args.Event.X - xoffset) , (int)(args.Event.Y - yoffset))));
-            if(r != null && RoomNodes.TryGetValue(r.Room.Id, out var room))
-            {
-                NavigatorTreeView.ExpandToPath(room.Path);
-                NavigatorTreeView.Selection.SelectPath(room.Path);
-
-                // room selection change on navigator tree view drives redraw map
-
-            }
-        }
-    }
+    
 
     private void MapScrollRoomIntoView(RoomData room) {
         if(AreaMap != null) {
@@ -151,9 +153,11 @@ partial class MainWindow : Gtk.Window {
 
             MapScrollWindow.GetAllocatedSize(out var viewSize, out var viewBaseline);
 
-            if(AreaMap.Rooms.FirstOrDefault(ir => ir.Room.Id == room.Vnum, out var imageroom)) {
+            if(AreaMap.Rooms.FirstOrDefault(ir => ir.Room.Id == room.Vnum, out var imageroom) && imageroom != null) {
+                
                 MapScrollWindow.Vadjustment.Value = Math.Max(MapScrollWindow.Vadjustment.Lower, Math.Min(MapScrollWindow.Vadjustment.Upper, imageroom.Rectangle.Bottom - imageroom.Rectangle.Height / 2 + yoffset - viewSize.Height / 2));
                 MapScrollWindow.Hadjustment.Value = Math.Max(MapScrollWindow.Hadjustment.Lower, Math.Min(MapScrollWindow.Hadjustment.Upper, imageroom.Rectangle.Right - imageroom.Rectangle.Width / 2 + xoffset - viewSize.Width / 2));
+                Debug.Print($"MapScroll {imageroom.Rectangle.ToString()} :: {alloc} :: {MapScrollWindow.Hadjustment.Upper} x {MapScrollWindow.Vadjustment.Upper}");
             }
         }
     }
@@ -162,8 +166,7 @@ partial class MainWindow : Gtk.Window {
     {
         var mmboptions = new MUDMapBuilder.BuildOptions();
         mmboptions.MaxSteps = 1000;
-        mmboptions.RemoveRoomsWithSingleOutsideExit = false;
-        mmboptions.RemoveSolitaryRooms = false;
+
         if(MarkedRoom != null)
             MarkedRoom.MarkColor = OriginalColor;
         if(newMarkedRoom != null) {
@@ -178,33 +181,65 @@ partial class MainWindow : Gtk.Window {
                 MapImage.Pixbuf.Dispose();
             }
 
-            AreaMap = BuiltArea.BuildPng(mmboptions, true);
+            AreaMap = BuiltArea.BuildPng(mmboptions);
             MapImage.Pixbuf = new Pixbuf(AreaMap.PngData);
-            MapImage.SetSizeRequest(MapImage.Pixbuf.Width, MapImage.Pixbuf.Height);
+
+            if(MarkedRoom != null && RoomData.Rooms.TryGetValue(MarkedRoom.Id, out var roomData))
+                MapScrollRoomIntoView(roomData);
         }
         
     }
 
-    private void BuildMap(AreaData area) {
-        if(BuiltArea != null && area.Name == BuiltArea.Name) return;
+    private void BuildMap(AreaData area, RoomData? selectedRoom = null) {
+        //if(BuiltArea != null && area.Name == BuiltArea.Name) return;
+
         BuiltArea = null;
         AreaMap = null;
+        if(MapImage.Pixbuf != null)
+                MapImage.Pixbuf.Dispose();
+        MapImage.Pixbuf = null;
+
         var mmboptions = new MUDMapBuilder.BuildOptions();
         mmboptions.MaxSteps = 1000;
-        mmboptions.RemoveRoomsWithSingleOutsideExit = false;
-        mmboptions.RemoveSolitaryRooms = false;
 
         var mmbarea = new MUDMapBuilder.MMBArea() { Name = area.Name };
 
         var roomdict = new Dictionary<int, (RoomData, MMBRoom)>();
         var arearooms = new List<MMBRoom>();
+        area.ResetArea();
+        var POIs = "";
         foreach(var room in area.Rooms.Values) {
-            var mmbroom = new MUDMapBuilder.MMBRoom(room.Vnum, room.Name, false);
+            POIs = "";
+
+            foreach (var ch in room.Characters)
+            {
+                if(ch.Flags.ISSET(ActFlags.Train))
+                    POIs = POIs + "(TRAIN) " + ch.ShortDescription + "\n";
+                if (ch.Flags.ISSET(ActFlags.Practice))
+                    POIs = POIs + "(PRACTICE) " + ch.ShortDescription + "\n";
+                if (ch.Flags.ISSET(ActFlags.Shopkeeper))
+                    POIs = POIs + "(SHOP) " + ch.ShortDescription + "\n";
+            }
+
+            var mmbroom = new MUDMapBuilder.MMBRoom(room.Vnum, room.Name, POIs, false);
             //arearooms.Add(mmbroom);    
             roomdict.TryAdd(room.Vnum, (room, mmbroom));
             foreach(var exit in room.Exits) {
                 if(exit != null && exit.destination != null) {
-                    var mmbdest = new MUDMapBuilder.MMBRoom(exit.destination.Vnum, exit.destination.Name, exit.destination.Area != room.Area);
+                    POIs = "";
+                    if (exit.destination.Area == area)
+                    {
+                        foreach (var ch in exit.destination.Characters)
+                        {
+                            if (ch.Flags.ISSET(ActFlags.Train))
+                                POIs = POIs + "(TRAIN) " + ch.ShortDescription + "\n";
+                            if (ch.Flags.ISSET(ActFlags.Practice))
+                                POIs = POIs + "(PRACTICE) " + ch.ShortDescription + "\n";
+                            if (ch.Flags.ISSET(ActFlags.Shopkeeper))
+                                POIs = POIs + "(SHOP) " + ch.ShortDescription + "\n";
+                        }
+                    }
+                    var mmbdest = new MUDMapBuilder.MMBRoom(exit.destination.Vnum, exit.destination.Name, POIs, exit.destination.Area != room.Area);
                     roomdict.TryAdd(exit.destination.Vnum, (exit.destination, mmbdest));
                     
                 }
@@ -241,20 +276,32 @@ partial class MainWindow : Gtk.Window {
         var result = MapBuilder.MultiRun(mmbproj, log);
         
         BuiltArea = result.History.Last();
-        AreaMap = BuiltArea.BuildPng(mmboptions, true);
+
+        if(selectedRoom != null && BuiltArea.Rooms.FirstOrDefault(r => r.Id == selectedRoom.Vnum, out var mmb_selected_room) && mmb_selected_room != null) {
+            if(this.MarkedRoom != null)
+                this.MarkedRoom.MarkColor = OriginalColor;
+            OriginalColor = mmb_selected_room.MarkColor;
+            this.MarkedRoom = mmb_selected_room;
+            mmb_selected_room.MarkColor = SKColors.Red;
+        }
+
+        AreaMap = BuiltArea.BuildPng(mmboptions);
         MapImage.Pixbuf = new Pixbuf(AreaMap.PngData);
-        MapImage.SetSizeRequest(MapImage.Pixbuf.Width, MapImage.Pixbuf.Height);
-        
+        try
+        {
+            System.IO.File.WriteAllBytes(area.Name + ".png", AreaMap.PngData.ToArray());
+        }
+        catch { }
+        if (MarkedRoom != null && RoomData.Rooms.TryGetValue(MarkedRoom.Id, out var roomData))
+            MapScrollRoomIntoView(roomData);
     }
 
-    private async Task CallBuildMap(AreaData area) {
-        if(MapImage.Pixbuf != null)
-                MapImage.Pixbuf.Dispose();
-        MapImage.Pixbuf = null;
+    private async Task CallBuildMap(AreaData area, RoomData? selectRoom = null) {
+
         NavigatorTreeView.Sensitive = false;
         MapSpinner.Visible = true;
         MapSpinner.Start();
-        await Task.Run(() => BuildMap(area));
+        await Task.Run(() => BuildMap(area, selectRoom));
         MapSpinner.Stop();
         MapSpinner.Visible = false;
         NavigatorTreeView.Sensitive = true;
@@ -277,6 +324,29 @@ partial class MainWindow : Gtk.Window {
         }
     }
 
+    private void MapImageEventBox_Click(object sender, ButtonReleaseEventArgs args)
+    {
+        if(AreaMap != null) {
+            float xoffset = 0;
+            float yoffset = 0;
+            
+            MapImage.GetAllocatedSize(out var alloc, out var baseline2);
+            if(alloc.Width > MapImage.Pixbuf.Width)
+                xoffset = (alloc.Width - MapImage.Pixbuf.Width) / 2;
+            if(alloc.Height > MapImage.Pixbuf.Height)
+                yoffset = (alloc.Height - MapImage.Pixbuf.Height) / 2;
+            //var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)(args.Event.X * (float) MapImage.Pixbuf.Width / alloc.Width) , (int)(args.Event.Y * (float) MapImage.Pixbuf.Height / alloc.Height))));
+            var r = AreaMap.Rooms.FirstOrDefault(ar => ar.Rectangle.Contains(new System.Drawing.Point((int)(args.Event.X - xoffset) , (int)(args.Event.Y - yoffset))));
+            if(r != null && RoomNodes.TryGetValue(r.Room.Id, out var room))
+            {
+                NavigatorTreeView.ExpandToPath(room.Path);
+                NavigatorTreeView.Selection.SelectPath(room.Path);
+
+                // room selection change on navigator tree view drives redraw map
+
+            }
+        }
+    }
     private void RenderMyNodeText(TreeViewColumn tree_column, CellRenderer cell, ITreeModel tree_model, TreeIter iter)
     {
         if(cell is CellRendererText renderer && tree_model.GetValue (iter, 0) is MyNode node)
@@ -294,6 +364,17 @@ partial class MainWindow : Gtk.Window {
             {
                 renderer.Text = text;
             }
+        }
+    }
+
+    private void SaveAreasButton_Clicked(object sender, EventArgs e)
+    {
+        var areastosave = (from area in AreaData.Areas where area.saved == false select area).ToList();
+        areastosave.ForEach(area => area.Save());
+        using(var dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, $"{areastosave.Count} areas saved."))
+        {
+            dialog.Title = "Saved Areas";
+            dialog.Run();
         }
     }
 

@@ -214,14 +214,14 @@ partial class MainWindow : Gtk.Window {
             foreach (var ch in room.Characters)
             {
                 if(ch.Flags.ISSET(ActFlags.Train))
-                    POIs = POIs + "(TRAIN) " + ch.ShortDescription + "\n";
+                    POIs = POIs + "   (TRAIN) " + ch.ShortDescription + "\n";
                 if (ch.Flags.ISSET(ActFlags.Practice))
-                    POIs = POIs + "(PRACTICE) " + ch.ShortDescription + "\n";
+                    POIs = POIs + "   (PRACTICE) " + ch.ShortDescription + "\n";
                 if (ch.Flags.ISSET(ActFlags.Shopkeeper))
-                    POIs = POIs + "(SHOP) " + ch.ShortDescription + "\n";
+                    POIs = POIs + "   (SHOP) " + ch.ShortDescription + "\n";
             }
 
-            var mmbroom = new MUDMapBuilder.MMBRoom(room.Vnum, room.Name, POIs, false);
+            var mmbroom = new MUDMapBuilder.MMBRoom(room.Vnum, room.Name, false, POIs.TrimEnd());
             //arearooms.Add(mmbroom);    
             roomdict.TryAdd(room.Vnum, (room, mmbroom));
             foreach(var exit in room.Exits) {
@@ -232,14 +232,14 @@ partial class MainWindow : Gtk.Window {
                         foreach (var ch in exit.destination.Characters)
                         {
                             if (ch.Flags.ISSET(ActFlags.Train))
-                                POIs = POIs + "(TRAIN) " + ch.ShortDescription + "\n";
+                                POIs = POIs + "   (TRAIN) " + ch.ShortDescription + "\n";
                             if (ch.Flags.ISSET(ActFlags.Practice))
-                                POIs = POIs + "(PRACTICE) " + ch.ShortDescription + "\n";
+                                POIs = POIs + "   (PRACTICE) " + ch.ShortDescription + "\n";
                             if (ch.Flags.ISSET(ActFlags.Shopkeeper))
-                                POIs = POIs + "(SHOP) " + ch.ShortDescription + "\n";
+                                POIs = POIs + "   (SHOP) " + ch.ShortDescription + "\n";
                         }
                     }
-                    var mmbdest = new MUDMapBuilder.MMBRoom(exit.destination.Vnum, exit.destination.Name, POIs, exit.destination.Area != room.Area);
+                    var mmbdest = new MUDMapBuilder.MMBRoom(exit.destination.Vnum, exit.destination.Name, exit.destination.Area != room.Area, POIs.TrimEnd());
                     roomdict.TryAdd(exit.destination.Vnum, (exit.destination, mmbdest));
                     
                 }
